@@ -28,6 +28,12 @@ test('NIT con DV errado: sin la palabra NIT no se tapa; con ella sí, con aviso'
   assert.match(r.tabla[0].nota, /no coincide/);
 });
 
+test('caso de control: un NIT con otro dígito no se junta con el correcto, ni se tapan fecha y monto', () => {
+  assert.strictEqual(tapado('La entidad 800.197.268-4 y la 800.197.268-5 firmaron el 15/12/2026 por $3.500.000.'),
+    'La entidad [NIT_1] y la 800.197.268-5 firmaron el 15/12/2026 por $3.500.000.');
+  assert.strictEqual(tapado('NIT 800.197.268-4, también escrito 800197268.'), 'NIT [NIT_1], también escrito [NIT_1].');
+});
+
 test('cédulas con y sin puntos reciben la misma etiqueta', () => {
   const r = T.tapar('Ana, identificada con C.C. No. 52.123.456 de Bogotá. Firma: 52123456.');
   assert.strictEqual(r.texto, 'Ana, identificada con C.C. No. [CÉDULA_1] de Bogotá. Firma: [CÉDULA_1].');

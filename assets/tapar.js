@@ -170,7 +170,12 @@
       if (h.tipo === 'nit') src += '(?:\\s?-\\s?\\d(?![\\d]))?';
       if (h.tipo === 'telefono') src = '(?:\\(?\\+?57\\)?[\\s.-]?)?' + src;
       var re = new RegExp('(?<![\\d$])' + src + '(?![\\d]|\\.\\d)', 'g'), m;
-      while ((m = re.exec(t))) extra.push(hallazgo(h.tipo, m.index, m[0], d, h.nota));
+      while ((m = re.exec(t))) {
+        // Un NIT con otro dígito de verificación es otro número (o un error): no se junta.
+        var dv = /-\s?(\d)$/.exec(m[0]);
+        if (h.tipo === 'nit' && dv && dvNit(d) !== +dv[1]) continue;
+        extra.push(hallazgo(h.tipo, m.index, m[0], d, h.nota));
+      }
     });
     return extra;
   }
