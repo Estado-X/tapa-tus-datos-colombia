@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tapa tus datos antes de pegarlos en la IA · Estado X</title>
+<meta name="description" content="Pega un contrato, una demanda o un correo: la página tapa cédulas, NIT, teléfonos, correos, direcciones, placas, cuentas y tarjetas con etiquetas, y después vuelve a poner los datos reales en la respuesta de la IA. Nada sale de tu navegador.">
+<meta property="og:title" content="Tapa tus datos antes de pegarlos en la IA">
+<meta property="og:description" content="Cédulas, NIT, teléfonos y direcciones cambiados por etiquetas antes de pegar el texto en ChatGPT, Claude o Gemini. Gratis y en tu navegador.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="banda">
+  <div class="contenedor banda__in">
+    <p class="kicker">Herramienta abierta · Estado X</p>
+    <h1>Tapa tus datos antes de <em>pegarlos en la IA</em></h1>
+    <p class="banda__sub">Pega un contrato, una demanda, un correo o una historia clínica. La página cambia cédulas, NIT, teléfonos, correos, direcciones, placas, cuentas y tarjetas por etiquetas como [CÉDULA_1]. Le pasas a la IA el texto tapado y, cuando te responda, la página vuelve a poner los datos reales.</p>
+    <ol class="pasos" aria-label="Pasos">
+      <li><a href="#t-pega"><b>1</b> Pega y tapa</a></li>
+      <li><a href="#t-revisa"><b>2</b> Revisa y copia</a></li>
+      <li><a href="#t-destapa"><b>3</b> Destapa la respuesta</a></li>
+    </ol>
+  </div>
+</header>
+
+<main class="contenedor">
+  <section class="bloque" aria-labelledby="t-pega">
+    <div class="tarjeta">
+      <h2 id="t-pega"><span class="paso">1</span> Pega tu texto</h2>
+      <p class="ayuda">Lo que pegas se queda en tu computador: la página no tiene servidor y no guarda nada. Al cerrarla, se borra todo.</p>
+      <label class="sr" for="original">Texto con datos personales</label>
+      <textarea id="original" rows="11" spellcheck="false" placeholder="Pega aquí el contrato, la demanda, el correo o la historia clínica."></textarea>
+      <div class="acciones">
+        <button type="button" class="boton boton--claro" id="ejemplo">Cargar un ejemplo</button>
+        <button type="button" class="boton boton--claro" id="limpiar">Borrar todo</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-revisa">
+    <h2 id="t-revisa"><span class="paso">2</span> Revisa lo que se tapó y cópialo</h2>
+    <p class="resumen" id="resumen" aria-live="polite"></p>
+    <div class="revisa-grid">
+      <div class="tarjeta salida-tarjeta">
+        <h3>Texto tapado, para la IA</h3>
+        <pre id="tapado" class="salida" tabindex="0" aria-label="Texto tapado"></pre>
+        <div class="acciones">
+          <button type="button" class="boton" id="copiar-tapado">Copiar el texto tapado</button>
+        </div>
+        <p class="nota">Léelo antes de pegarlo: la detección es por patrones y puede fallar. Si ves un dato a la vista, márcalo en «Tapa algo más».</p>
+      </div>
+      <aside class="tarjeta" aria-labelledby="t-tabla">
+        <h3 id="t-tabla">Lo que se tapó</h3>
+        <p class="ayuda ayuda--chica">Desmarca lo que no es un dato personal. La tabla vive solo mientras la página esté abierta: la necesitas en el paso 3.</p>
+        <div class="tabla-scroll">
+          <table class="tabla">
+            <thead><tr><th scope="col">Tapar</th><th scope="col">Etiqueta</th><th scope="col">Dato</th><th scope="col">Veces</th></tr></thead>
+            <tbody id="filas"></tbody>
+          </table>
+        </div>
+        <p class="vacio" id="vacio">Todavía no hay nada tapado.</p>
+        <div class="separador"></div>
+        <h4 id="t-mas">Tapa algo más</h4>
+        <p class="ayuda ayuda--chica">Nombres de personas, empresas, barrios, expedientes internos… Se tapan en todo el texto, sin importar mayúsculas ni tildes.</p>
+        <div class="manual">
+          <div class="campo"><label for="manual-texto">Dato</label><input type="text" id="manual-texto" autocomplete="off" placeholder="Ana María Gómez"></div>
+          <div class="campo"><label for="manual-tipo">Es</label>
+            <select id="manual-tipo"><option value="nombre">Nombre de una persona</option><option value="empresa">Empresa o entidad</option><option value="otro">Otro dato</option></select></div>
+        </div>
+        <div class="acciones acciones--chicas">
+          <button type="button" class="boton boton--chico" id="manual-agregar">Tapar en todo el texto</button>
+          <button type="button" class="boton boton--chico boton--claro" id="manual-seleccion">Tapar lo que seleccioné en el paso 1</button>
+        </div>
+        <p class="mensaje" id="manual-msg" hidden></p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-destapa">
+    <div class="tarjeta">
+      <h2 id="t-destapa"><span class="paso">3</span> Pega la respuesta de la IA</h2>
+      <p class="ayuda">La página cambia cada etiqueta por el dato real. Funciona aunque la IA escriba la etiqueta sin tilde, en minúsculas o sin corchetes.</p>
+      <div class="dos">
+        <div class="campo">
+          <label for="respuesta">Respuesta de la IA, con etiquetas</label>
+          <textarea id="respuesta" rows="9" spellcheck="false" placeholder="Pega aquí lo que te respondió la IA."></textarea>
+        </div>
+        <div class="campo">
+          <span class="etq" id="t-destapado">Con los datos reales</span>
+          <pre id="destapado" class="salida salida--chica" tabindex="0" aria-labelledby="t-destapado"></pre>
+        </div>
+      </div>
+      <div class="acciones">
+        <button type="button" class="boton" id="copiar-destapado">Copiar con los datos reales</button>
+      </div>
+      <p class="mensaje" id="destapa-msg" hidden></p>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="tarjeta abogados">
+      <div>
+        <h2>¿Eres abogado o abogada?</h2>
+        <p class="ayuda">Pegar el expediente de un cliente en una IA sin taparlo es entregar datos que no son tuyos. En IA para Abogados de Estado X aprendes a usar la IA en tu despacho con reglas claras para los datos de tus clientes.</p>
+      </div>
+      <a class="boton" href="https://estadox.com/abogados" target="_blank" rel="noopener">Conoce IA para Abogados</a>
+    </div>
+  </section>
+
+  <section class="bloque dos">
+    <div class="tarjeta">
+      <h2>Qué tapa</h2>
+      <ul class="reglas">
+        <li><strong>Cédulas</strong> con y sin puntos, cuando el texto dice «cédula», «C.C.», «C.E.» o «identificado con». También tarjetas de identidad, pasaportes y PPT.</li>
+        <li><strong>NIT</strong> con el dígito de verificación comprobado con el cálculo de módulo 11 que usa la DIAN; si el texto dice «NIT», se tapa aunque el dígito no cuadre (y te avisa).</li>
+        <li><strong>Teléfonos</strong>: celulares, fijos de 10 dígitos (601, 604…) y con +57.</li>
+        <li><strong>Correos</strong> y <strong>direcciones</strong> (Calle, Cra., Av., Transversal, Diagonal… # …-…, con apto u oficina).</li>
+        <li><strong>Placas</strong> de carro (ABC 123) y de moto (ABC 12D).</li>
+        <li><strong>Cuentas bancarias</strong> cuando el texto dice «cuenta de ahorros» o «corriente», y <strong>tarjetas</strong> que pasan la prueba de Luhn.</li>
+        <li><strong>Radicados</strong> de procesos judiciales de 23 dígitos.</li>
+        <li>El mismo dato siempre recibe la misma etiqueta, aunque esté escrito distinto (52.123.456 y 52123456).</li>
+      </ul>
+    </div>
+    <div class="tarjeta">
+      <h2>Límites</h2>
+      <ul class="reglas">
+        <li>Busca por patrones: <strong>puede dejar datos sin tapar o tapar de más</strong>. Revisa siempre el texto antes de pegarlo.</li>
+        <li>No reconoce nombres de personas ni de empresas por sí sola: márcalos tú en «Tapa algo más».</li>
+        <li>Tapar los datos reduce lo que entregas, pero el texto puede seguir diciendo de quién se trata (un cargo, un barrio, un hecho conocido). Lo que cuenta un documento también puede ser sensible.</li>
+        <li><strong>No reemplaza la política de uso de IA de tu firma o tu entidad</strong>, ni la autorización de los titulares, ni asesoría legal.</li>
+        <li>La tabla para destapar <strong>vive solo mientras la página esté abierta</strong>. Si la cierras o la recargas, se pierde: no la guarda en ningún lado.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="tarjeta">
+      <h2>Por qué importa: la Ley 1581 de 2012</h2>
+      <ul class="reglas">
+        <li><strong>Art. 3:</strong> dato personal es cualquier información vinculada o que pueda asociarse a una persona natural determinada o determinable.</li>
+        <li><strong>Art. 4, literales g y h:</strong> principios de seguridad (medidas para evitar consulta, uso o acceso no autorizado) y de confidencialidad (reserva de la información).</li>
+        <li><strong>Art. 5:</strong> los datos de salud, entre otros, son datos sensibles; una historia clínica pide aún más cuidado.</li>
+        <li><strong>Art. 17, literal d:</strong> quien es responsable de los datos debe conservarlos con la seguridad necesaria para impedir su consulta o uso no autorizado.</li>
+        <li><strong>Art. 26:</strong> reglas para enviar datos personales a otros países; muchas herramientas de IA procesan los datos fuera de Colombia.</li>
+        <li><strong>Art. 23:</strong> la Superintendencia de Industria y Comercio puede imponer multas de hasta 2.000 salarios mínimos mensuales.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor pie__in">
+    <p>Todo pasa en tu navegador: lo que pegas no se envía a ningún lado y no se guarda.</p>
+    <p>Inspirada en <a href="https://github.com/sgasser/pasteguard" target="_blank" rel="noopener">PasteGuard</a>, de Stefan Gasser (licencia Apache 2.0). Código abierto en <a href="https://github.com/Estado-X/tapa-tus-datos-colombia" target="_blank" rel="noopener">GitHub</a>.</p>
+    <p class="firma">Hecho por <a href="https://estadox.com" target="_blank" rel="noopener">Estado <em>X</em></a></p>
+  </div>
+</footer>
+<script src="assets/tapar.js"></script>
+<script src="assets/ejemplo.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
