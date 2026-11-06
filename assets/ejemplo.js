@@ -1,11 +1,11 @@
-/* Texto de ejemplo con datos inventados (el NIT del ejemplo cumple el dígito de verificación). */
+/* Texto de ejemplo con datos ficticios. El NIT 999.888.777-1 es inventado (cumple el dígito de verificación). */
 (function (raiz) {
   'use strict';
   raiz.EJEMPLO = {
     texto: [
-      'CONTRATO DE ARRENDAMIENTO DE VEHÍCULO',
+      'CONTRATO DE ARRENDAMIENTO DE VEHÍCULO (ejemplo con datos ficticios)',
       '',
-      'Entre Ana María Gómez Rojas, identificada con C.C. No. 52.123.456 de Bogotá, celular 300 123 4567, correo ana.gomez@ejemplo.co, domiciliada en la Calle 45 # 13-20 apto 302, Bogotá, y Ofertas Andinas S.A.S., NIT 900.123.456-8, con sede en la Cra. 7 No. 71-21 oficina 501, teléfono (601) 345 6789, se celebra el presente contrato.',
+      'Entre Ana María Gómez Rojas, identificada con C.C. No. 52.123.456 de Bogotá, celular 300 123 4567, correo ana.gomez@ejemplo.co, domiciliada en la Calle 45 # 13-20 apto 302, Bogotá, y Ofertas Andinas S.A.S., NIT 999.888.777-1, con sede en la Cra. 7 No. 71-21 oficina 501, teléfono (601) 345 6789, se celebra el presente contrato.',
       '',
       'PRIMERA. Objeto. Ofertas Andinas S.A.S. entrega a Ana María Gómez Rojas el vehículo de placas ABC 123.',
       'SEGUNDA. Precio. $3.500.000 mensuales, consignados en la cuenta de ahorros No. 0123-4567-89 del Banco Ejemplo, desde el 15/12/2026.',

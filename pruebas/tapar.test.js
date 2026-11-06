@@ -9,7 +9,7 @@ const tipos = (texto) => T.detectar(texto).map((h) => h.tipo);
 test('dígito de verificación del NIT con NIT públicos de entidades', () => {
   assert.strictEqual(T.dvNit('800197268'), 4); // DIAN, 800.197.268-4
   assert.strictEqual(T.dvNit('800.176.089'), 2); // SIC, 800.176.089-2
-  assert.strictEqual(T.dvNit('900123456'), 8);
+  assert.strictEqual(T.dvNit('999888777'), 1); // NIT ficticio del ejemplo
 });
 
 test('Luhn: número de prueba de tarjeta y uno que no pasa', () => {
@@ -108,9 +108,9 @@ test('destapar devuelve los datos reales aunque la IA cambie la forma de la etiq
 
 test('ida y vuelta: tapar y destapar deja el texto igual', () => {
   const t = 'Contrato entre Ana María Gómez, C.C. 52.123.456, celular 300 123 4567, Calle 45 # 13-20, ' +
-    'y Ofertas Andinas S.A.S., NIT 900.123.456-8. Proceso 11001-31-03-001-2025-00123-00. Ana María Gómez acepta.';
+    'y Ofertas Andinas S.A.S., NIT 999.888.777-1. Proceso 11001-31-03-001-2025-00123-00. Ana María Gómez acepta.';
   const r = T.tapar(t, { manuales: [{ texto: 'Ana María Gómez', tipo: 'nombre' }, { texto: 'Ofertas Andinas S.A.S.', tipo: 'empresa' }] });
-  assert.doesNotMatch(r.texto, /52\.123\.456|4567|Gómez|900\.123/);
+  assert.doesNotMatch(r.texto, /52\.123\.456|4567|Gómez|999\.888/);
   assert.strictEqual(T.destapar(r.texto, r.tabla).texto, t);
 });
 
@@ -122,4 +122,18 @@ test('el orden de las etiquetas sigue el orden del texto', () => {
 test('texto vacío no falla', () => {
   assert.deepStrictEqual(T.tapar('').tabla, []);
   assert.strictEqual(T.destapar('', []).texto, '');
+});
+
+test('cédula escrita con espacios, con contexto', () => {
+  const r = T.tapar('Cédula 52 123 456 de Bogotá. Repito: 52123456.');
+  assert.strictEqual(r.texto, 'Cédula [CÉDULA_1] de Bogotá. Repito: [CÉDULA_1].');
+});
+
+test('el carácter de antes se revisa sin lookbehind (sirve en Safari viejo)', () => {
+  const fs = require('node:fs');
+  const src = fs.readFileSync(require.resolve('../assets/tapar.js'), 'utf8');
+  assert.doesNotMatch(src, /\(\?<[=!]/);
+  assert.strictEqual(tapado('Ana y Anabel', { manuales: [{ texto: 'Ana', tipo: 'nombre' }] }), '[NOMBRE_1] y Anabel');
+  assert.strictEqual(tapado('Código XABC 123 y $3001234567'), 'Código XABC 123 y $3001234567');
+  assert.strictEqual(tapado('Lote 1.800.197.268-4'), 'Lote 1.800.197.268-4');
 });

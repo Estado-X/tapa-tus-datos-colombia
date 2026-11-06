@@ -18,7 +18,7 @@ Herramienta abierta para **tapar los datos personales de un texto antes de pegar
 
 | Dato | Etiqueta | Cómo lo reconoce |
 |---|---|---|
-| Cédula | `[CÉDULA_1]` | Con y sin puntos, cuando el texto dice «cédula», «C.C.», «C.E.» o «identificado con» |
+| Cédula | `[CÉDULA_1]` | Con puntos, con espacios o sin separador, cuando el texto dice «cédula», «C.C.», «C.E.» o «identificado con» |
 | Tarjeta de identidad, pasaporte, PPT | `[DOCUMENTO_1]` | Cuando el texto lo nombra |
 | NIT | `[NIT_1]` | Con dígito de verificación comprobado (módulo 11 de la DIAN). Si el texto dice «NIT», se tapa aunque el dígito no cuadre, con aviso |
 | Teléfono | `[TELÉFONO_1]` | Celulares (3XX), fijos de 10 dígitos (601 a 608) y con +57; números de 7 dígitos si dicen «Tel.» |
@@ -36,7 +36,7 @@ Lo que **no** tapa: fechas, montos en pesos, porcentajes, números de leyes, dec
 
 - Es una página estática (HTML, CSS y JavaScript) publicada con GitHub Pages. No tiene servidor ni base de datos, no necesita claves y **no envía a ningún lado** lo que pegas.
 - **La tabla para destapar vive solo en la memoria de la página.** No se guarda en el navegador ni en ningún lado: si cierras o recargas la página, se pierde.
-- `assets/tapar.js` tiene la detección, el tapado y el destapado; `assets/app.js` es la interfaz; `assets/ejemplo.js`, el texto de ejemplo con datos inventados. Las pruebas, en `pruebas/`, revisan el dígito de verificación con NIT públicos (DIAN 800.197.268-4 y SIC 800.176.089-2), la prueba de Luhn, cada tipo de dato, los casos que no deben taparse y la ida y vuelta completa.
+- `assets/tapar.js` tiene la detección, el tapado y el destapado; `assets/app.js` es la interfaz; `assets/ejemplo.js`, el texto de ejemplo con datos ficticios (también el NIT). Las pruebas, en `pruebas/`, revisan el dígito de verificación con NIT públicos (DIAN 800.197.268-4 y SIC 800.176.089-2), la prueba de Luhn, cada tipo de dato, los casos que no deben taparse y la ida y vuelta completa.
 
 ### Úsala o adáptala
 
